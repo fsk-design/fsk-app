@@ -1,11 +1,13 @@
-<html lang="ru"><head>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
 <title>fsk | family</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
   --or: #E8571A;
@@ -242,10 +244,20 @@ body {
 /* ══ OBJECTS ══ */
 .list-pad { padding:12px 16px; display:flex; flex-direction:column; gap:10px; }
 
-/* Collapsible cards */
-.obj-card.open .obj-body { display:block; animation:slideDown .22s ease; }
-.obj-card .obj-body { display:none; }
-@keyframes slideDown { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+/* Google Drive button in footer */
+.obj-drive-btn {
+  display:flex; align-items:center; justify-content:center;
+  width:30px; height:30px; border-radius:9px;
+  background:var(--bg2); border:1px solid var(--border);
+  flex-shrink:0; text-decoration:none;
+  transition:opacity .15s, transform .15s;
+}
+.obj-drive-btn:active { opacity:.7; transform:scale(.92); }
+.obj-drive-btn svg { width:15px; height:15px; display:block; }
+.obj-name-wrap { flex:1; min-width:0; }
+.obj-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.obj-card .obj-body { max-height:0; overflow:hidden; opacity:0; transition:max-height .38s cubic-bezier(.4,0,.2,1), opacity .3s ease; }
+.obj-card.open .obj-body { max-height:600px; opacity:1; }
 .obj-top { cursor:pointer; user-select:none; }
 .obj-top-row { display:flex; align-items:center; justify-content:space-between; gap:10px; }
 .obj-chevron {
@@ -268,10 +280,10 @@ body {
 
 .obj-card {
   background:var(--bg); border:1px solid var(--border); border-radius:14px;
-  overflow:hidden; transition:all .15s;
+  overflow:hidden; transition:all .15s; border-left:4px solid transparent;
 }
 .obj-card:active { background:var(--bg2); }
-.obj-top { padding:14px 14px 10px; border-bottom:1px solid rgba(0,0,0,.04); border-left:4px solid; }
+.obj-top { padding:14px 14px 10px; border-bottom:1px solid rgba(0,0,0,.04); }
 .obj-badge { display:inline-flex; align-items:center; gap:4px; font-size:9px; font-weight:700; padding:2px 8px; border-radius:20px; margin-bottom:8px; letter-spacing:.3px; }
 .obj-name { font-size:15px; font-weight:700; margin-bottom:3px; }
 .obj-addr { font-size:10px; color:var(--text2); }
@@ -295,8 +307,15 @@ body {
 }
 
 /* ══ TEAM ══ */
-.emp-card { background:var(--bg); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
-.emp-head { display:flex; align-items:center; gap:12px; padding:14px; border-bottom:1px solid rgba(0,0,0,.04); }
+.emp-card { background:var(--bg); border:1px solid var(--border); border-radius:14px; overflow:hidden; border-left:4px solid transparent; transition:border-color .2s; }
+.emp-head { display:flex; align-items:center; gap:12px; padding:14px; border-bottom:1px solid rgba(0,0,0,.04); cursor:pointer; user-select:none; }
+.emp-head:active { background:var(--bg2); }
+.emp-body { max-height:0; overflow:hidden; transition:max-height .38s cubic-bezier(.4,0,.2,1), opacity .3s ease; opacity:0; }
+.emp-card.open .emp-body { max-height:600px; opacity:1; }
+.emp-chevron { margin-left:auto; width:28px; height:28px; border-radius:8px; background:var(--bg2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .3s cubic-bezier(.4,0,.2,1), background .2s, border-color .2s; }
+.emp-card.open .emp-chevron { transform:rotate(180deg); background:var(--or2); border-color:rgba(232,87,26,.25); }
+.emp-chevron svg { display:block; transition:stroke .2s; }
+.emp-card.open .emp-chevron svg { stroke:#E8571A !important; }
 .emp-ava { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; flex-shrink:0; }
 .emp-nm { font-size:14px; font-weight:700; }
 .emp-role { font-size:10px; color:var(--text2); margin-top:2px; }
@@ -325,6 +344,8 @@ body {
 }
 .ai-item:active { background:var(--bg2); }
 .ai-ico-w { width:48px; height:48px; border-radius:13px; background:rgba(232,87,26,.08); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.ai-ico-plain { background:transparent; padding:0; }
+.ai-ico-plain svg { width:44px; height:44px; border-radius:11px; display:block; }
 .ai-info { flex:1; min-width:0; }
 .ai-name { font-size:14px; font-weight:700; margin-bottom:3px; }
 .ai-desc { font-size:10px; color:var(--text2); line-height:1.4; }
@@ -461,35 +482,14 @@ body {
 .back svg { stroke:var(--text); stroke-width:2; width:18px; height:18px; }
 
 </style>
-<style id="claude-agent-animation-styles">
-      @keyframes claude-pulse {
-        0% {
-          box-shadow: 
-            inset 0 0 10px rgba(217, 119, 87, 0.5),
-            inset 0 0 20px rgba(217, 119, 87, 0.3),
-            inset 0 0 30px rgba(217, 119, 87, 0.1);
-        }
-        50% {
-          box-shadow: 
-            inset 0 0 15px rgba(217, 119, 87, 0.7),
-            inset 0 0 25px rgba(217, 119, 87, 0.5),
-            inset 0 0 35px rgba(217, 119, 87, 0.2);
-        }
-        100% {
-          box-shadow: 
-            inset 0 0 10px rgba(217, 119, 87, 0.5),
-            inset 0 0 20px rgba(217, 119, 87, 0.3),
-            inset 0 0 30px rgba(217, 119, 87, 0.1);
-        }
-      }
-    </style></head>
+</head>
 <body>
 
 <div class="app">
 <div class="scroll-area" id="sa">
 
 <!-- ════════ HOME ════════ -->
-<div class="page" id="page-home">
+<div class="page active" id="page-home">
 
   <!-- Logo — exact match -->
   <div class="home-logo-wrap">
@@ -504,24 +504,24 @@ body {
   <!-- Menu list — exact match to screenshot -->
   <div class="menu-list">
     <div class="menu-item" onclick="go('objects')">
-      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M9 3v18M15 3v18M3 9h18M3 15h18"></path></svg></div>
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg></div>
       <div class="mi-text">Объекты</div>
     </div>
     <div class="menu-item" onclick="go('team')">
-      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
       <div class="mi-text">Команда</div>
     </div>
     <div class="menu-item" onclick="go('ai')">
-      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path><path d="M19 3l.9 2.1L22 6l-2.1.9L19 9l-.9-2.1L16 6l2.1-.9z"></path><path d="M5 17l.9 2.1L8 20l-2.1.9L5 23l-.9-2.1L2 20l2.1-.9z"></path></svg></div>
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3l.9 2.1L22 6l-2.1.9L19 9l-.9-2.1L16 6l2.1-.9z"/><path d="M5 17l.9 2.1L8 20l-2.1.9L5 23l-.9-2.1L2 20l2.1-.9z"/></svg></div>
       <div class="mi-text">AI Сервисы</div>
     </div>
     <div class="menu-item" onclick="go('timeline')">
-      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
       <div class="mi-text">График работ</div>
       <div class="mi-badge live"><div class="live-dot-s"></div>Live</div>
     </div>
     <div class="menu-item" onclick="go('about')">
-      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="8.01"></line><line x1="12" y1="11" x2="12" y2="16"></line></svg></div>
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8.01"/><line x1="12" y1="11" x2="12" y2="16"/></svg></div>
       <div class="mi-text">Об отделе</div>
       <div class="mi-badge new">AI-платформа</div>
     </div>
@@ -538,7 +538,7 @@ body {
       <div class="hs-l">В работе</div>
     </div>
     <div class="hs">
-      <div class="hs-v" style="color:var(--c4)" id="home-days">0</div>
+      <div class="hs-v" style="color:var(--c4)" id="home-days">—</div>
       <div class="hs-l">До сен.</div>
     </div>
   </div>
@@ -584,13 +584,13 @@ body {
 <!-- ════════ TIMELINE ════════ -->
 <div class="page" id="page-timeline">
   <div class="page-hdr">
-    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
     <div>
       <div class="ph-title">График работ</div>
       <div class="ph-sub" id="tl-date-sub">Фев — Сен 2025</div>
     </div>
     <div class="ph-right">
-      <div class="live-chip"><div class="live-dot-s"></div><span id="clk-tl">12:00</span></div>
+      <div class="live-chip"><div class="live-dot-s"></div><span id="clk-tl">--:--</span></div>
     </div>
   </div>
   <div class="tl-legend-bar">
@@ -603,7 +603,7 @@ body {
   </div>
   <div class="tl-scroll">
     <div class="tl-inner" id="tl-inner">
-      <div id="tc" data-d="6 мар" style="left: 119.677px; height: 40px; top: 40px;"></div>
+      <div id="tc" data-d=""></div>
       <div class="mhdr-m" id="mhdr-m"><div></div></div>
       <div id="tl-rows"></div>
     </div>
@@ -611,9 +611,9 @@ body {
 </div>
 
 <!-- ════════ OBJECTS ════════ -->
-<div class="page active" id="page-objects">
+<div class="page" id="page-objects">
   <div class="page-hdr">
-    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
     <div>
       <div class="ph-title">Объекты</div>
       <div class="ph-sub">6 проектов · задачи и Drive</div>
@@ -621,31 +621,42 @@ body {
   </div>
   <div class="list-pad">
 
-    <div class="obj-card" onclick="toggleCard(this)">
-      <div class="obj-top" style="border-left-color:#94a3b8">
+    <div class="obj-card" style="border-left-color:#94a3b8" onclick="toggleCard(this)">
+      <div class="obj-top">
         <span class="obj-badge" style="background:rgba(148,163,184,.1);color:#6b7280">● Завершается</span>
         <div class="obj-top-row">
-          <div><div class="obj-name">Сабурово</div><div class="obj-addr">Аудит планировки д.107</div></div>
-          <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div class="obj-name-wrap">
+            <div class="obj-name">Сабурово</div>
+            <div class="obj-addr">Аудит планировки д.107</div>
+          </div>
+          <div class="obj-actions">
+            <a class="obj-drive-btn" href="#" target="_blank" onclick="event.stopPropagation()" title="Google Drive"><svg viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg></a>
+            <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
         </div>
       </div>
       <div class="obj-body">
         <div class="obj-tasks">
-          <div class="task-r"><div class="td td-a"></div><span class="t-nm">Аудит планировки д.107</span><span class="t-dt">Фев–Март</span></div>
+          <div class="task-r"><div class="td td-o"></div><span class="t-nm">Аудит планировки д.107</span><span class="t-dt">Фев–Март</span></div>
         </div>
         <div class="obj-foot">
           <div class="prog-w"><div class="prog-b"><div class="prog-f" style="width:70%;background:#94a3b8"></div></div><span class="prog-pct">70%</span></div>
-          <a class="drive-btn" href="#" target="_blank" onclick="event.stopPropagation()">↗ Drive</a>
         </div>
       </div>
     </div>
 
-    <div class="obj-card" onclick="toggleCard(this)">
-      <div class="obj-top" style="border-left-color:var(--c1)">
+    <div class="obj-card" style="border-left-color:var(--c1)" onclick="toggleCard(this)">
+      <div class="obj-top">
         <span class="obj-badge" style="background:rgba(22,163,74,.08);color:var(--c1)">● В работе</span>
         <div class="obj-top-row">
-          <div><div class="obj-name">Жаворонки Club</div><div class="obj-addr">Офис продаж, МКД, соседский центр, кв. клиента</div></div>
-          <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div class="obj-name-wrap">
+            <div class="obj-name">Жаворонки Club</div>
+            <div class="obj-addr">Офис продаж, МКД, соседский центр, кв. клиента</div>
+          </div>
+          <div class="obj-actions">
+            <a class="obj-drive-btn" href="#" target="_blank" onclick="event.stopPropagation()" title="Google Drive"><svg viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg></a>
+            <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
         </div>
       </div>
       <div class="obj-body">
@@ -658,17 +669,22 @@ body {
         </div>
         <div class="obj-foot">
           <div class="prog-w"><div class="prog-b"><div class="prog-f" style="width:40%;background:var(--c1)"></div></div><span class="prog-pct">40%</span></div>
-          <a class="drive-btn" href="#" target="_blank" onclick="event.stopPropagation()">↗ Drive</a>
         </div>
       </div>
     </div>
 
-    <div class="obj-card" onclick="toggleCard(this)">
-      <div class="obj-top" style="border-left-color:var(--c2)">
+    <div class="obj-card" style="border-left-color:var(--c2)" onclick="toggleCard(this)">
+      <div class="obj-top">
         <span class="obj-badge" style="background:rgba(217,119,6,.08);color:var(--c2)">◌ Уточняется</span>
         <div class="obj-top-row">
-          <div><div class="obj-name">Мартемьяново Парк</div><div class="obj-addr">Аудит МКД, таунхаусы, шоу-таун 157</div></div>
-          <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div class="obj-name-wrap">
+            <div class="obj-name">Мартемьяново Парк</div>
+            <div class="obj-addr">Аудит МКД, таунхаусы, шоу-таун 157</div>
+          </div>
+          <div class="obj-actions">
+            <a class="obj-drive-btn" href="#" target="_blank" onclick="event.stopPropagation()" title="Google Drive"><svg viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg></a>
+            <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
         </div>
       </div>
       <div class="obj-body">
@@ -679,17 +695,22 @@ body {
         </div>
         <div class="obj-foot">
           <div class="prog-w"><div class="prog-b"><div class="prog-f" style="width:10%;background:var(--c2)"></div></div><span class="prog-pct">10%</span></div>
-          <a class="drive-btn" href="#" target="_blank" onclick="event.stopPropagation()">↗ Drive</a>
         </div>
       </div>
     </div>
 
-    <div class="obj-card" onclick="toggleCard(this)">
-      <div class="obj-top" style="border-left-color:var(--c3)">
+    <div class="obj-card" style="border-left-color:var(--c3)" onclick="toggleCard(this)">
+      <div class="obj-top">
         <span class="obj-badge" style="background:rgba(124,58,237,.08);color:var(--c3)">● В работе</span>
         <div class="obj-top-row">
-          <div><div class="obj-name">Дубровицы Club</div><div class="obj-addr">Въездная группа, шоу-тквартиры, МКД, МОП</div></div>
-          <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div class="obj-name-wrap">
+            <div class="obj-name">Дубровицы Club</div>
+            <div class="obj-addr">Въездная группа, шоу-тквартиры, МКД, МОП</div>
+          </div>
+          <div class="obj-actions">
+            <a class="obj-drive-btn" href="#" target="_blank" onclick="event.stopPropagation()" title="Google Drive"><svg viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg></a>
+            <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
         </div>
       </div>
       <div class="obj-body">
@@ -702,17 +723,22 @@ body {
         </div>
         <div class="obj-foot">
           <div class="prog-w"><div class="prog-b"><div class="prog-f" style="width:20%;background:var(--c3)"></div></div><span class="prog-pct">20%</span></div>
-          <a class="drive-btn" href="#" target="_blank" onclick="event.stopPropagation()">↗ Drive</a>
         </div>
       </div>
     </div>
 
-    <div class="obj-card" onclick="toggleCard(this)">
-      <div class="obj-top" style="border-left-color:var(--c4)">
+    <div class="obj-card" style="border-left-color:var(--c4)" onclick="toggleCard(this)">
+      <div class="obj-top">
         <span class="obj-badge" style="background:rgba(37,99,235,.08);color:var(--c4)">◌ Старт апрель</span>
         <div class="obj-top-row">
-          <div><div class="obj-name">Апрелевка Club</div><div class="obj-addr">Офис продаж, шоурумы, планировки, МОП</div></div>
-          <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div class="obj-name-wrap">
+            <div class="obj-name">Апрелевка Club</div>
+            <div class="obj-addr">Офис продаж, шоурумы, планировки, МОП</div>
+          </div>
+          <div class="obj-actions">
+            <a class="obj-drive-btn" href="#" target="_blank" onclick="event.stopPropagation()" title="Google Drive"><svg viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg></a>
+            <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
         </div>
       </div>
       <div class="obj-body">
@@ -724,17 +750,22 @@ body {
         </div>
         <div class="obj-foot">
           <div class="prog-w"><div class="prog-b"><div class="prog-f" style="width:5%;background:var(--c4)"></div></div><span class="prog-pct">5%</span></div>
-          <a class="drive-btn" href="#" target="_blank" onclick="event.stopPropagation()">↗ Drive</a>
         </div>
       </div>
     </div>
 
-    <div class="obj-card" onclick="toggleCard(this)">
-      <div class="obj-top" style="border-left-color:var(--c6)">
+    <div class="obj-card" style="border-left-color:var(--c6)" onclick="toggleCard(this)">
+      <div class="obj-top">
         <span class="obj-badge" style="background:rgba(55,65,81,.06);color:var(--c6)">◈ Постоянный</span>
         <div class="obj-top-row">
-          <div><div class="obj-name">Авторский надзор</div><div class="obj-addr">Все объекты · непрерывно</div></div>
-          <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+          <div class="obj-name-wrap">
+            <div class="obj-name">Авторский надзор</div>
+            <div class="obj-addr">Все объекты · непрерывно</div>
+          </div>
+          <div class="obj-actions">
+            <a class="obj-drive-btn" href="#" target="_blank" onclick="event.stopPropagation()" title="Google Drive"><svg viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg></a>
+            <div class="obj-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
         </div>
       </div>
       <div class="obj-body">
@@ -743,7 +774,6 @@ body {
         </div>
         <div class="obj-foot">
           <div class="prog-w"><div class="prog-b"><div class="prog-f" style="width:25%;background:var(--c6)"></div></div><span class="prog-pct">25%</span></div>
-          <a class="drive-btn" href="#" target="_blank" onclick="event.stopPropagation()">↗ Drive</a>
         </div>
       </div>
     </div>
@@ -754,7 +784,7 @@ body {
 <!-- ════════ TEAM ════════ -->
 <div class="page" id="page-team">
   <div class="page-hdr">
-    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
     <div>
       <div class="ph-title">Команда</div>
       <div class="ph-sub">Загрузка · KPI · задачи</div>
@@ -762,12 +792,18 @@ body {
   </div>
   <div class="list-pad">
 
-    <div class="emp-card">
-      <div class="emp-head">
+    <div class="emp-card" style="border-left-color:var(--or)">
+      <div class="emp-head" onclick="toggleEmp(this)">
         <div class="emp-ava" style="background:rgba(232,87,26,.1);color:var(--or)">—</div>
-        <div><div class="emp-nm">Сотрудник 1</div><div class="emp-role">Укажите имя и роль</div></div>
+        <div>
+          <div class="emp-nm">Сотрудник 1</div>
+          <div class="emp-role">Укажите имя и роль</div>
+        </div>
         <span class="load-tag lhi">95%</span>
+        <div class="emp-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
       </div>
+
+      <div class="emp-body">
       <div class="kpi-row">
         <div class="sec-lbl">KPI · февраль</div>
         <div class="kpi-item">
@@ -784,14 +820,21 @@ body {
         <div class="emp-t"><div class="td td-a" style="margin-top:3px;flex-shrink:0"></div><div><div class="emp-tn">Авторский надзор</div><div class="emp-to">Все объекты · постоянно</div></div></div>
         <div class="emp-t"><div class="td td-w" style="margin-top:3px;flex-shrink:0"></div><div><div class="emp-tn">Шоу-таун 157 — договор</div><div class="emp-to">Мартемьяново · уточнить</div></div></div>
       </div>
+      </div>
     </div>
 
-    <div class="emp-card">
-      <div class="emp-head">
+    <div class="emp-card" style="border-left-color:var(--c1)">
+      <div class="emp-head" onclick="toggleEmp(this)">
         <div class="emp-ava" style="background:rgba(22,163,74,.1);color:var(--c1)">—</div>
-        <div><div class="emp-nm">Сотрудник 2</div><div class="emp-role">Дизайнер интерьеров</div></div>
+        <div>
+          <div class="emp-nm">Сотрудник 2</div>
+          <div class="emp-role">Дизайнер интерьеров</div>
+        </div>
         <span class="load-tag lmd">75%</span>
+        <div class="emp-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
       </div>
+
+      <div class="emp-body">
       <div class="kpi-row">
         <div class="sec-lbl">KPI · февраль</div>
         <div class="kpi-item">
@@ -808,14 +851,21 @@ body {
         <div class="emp-t"><div class="td td-a" style="margin-top:3px;flex-shrink:0"></div><div><div class="emp-tn">Въездная группа ДП</div><div class="emp-to">Дубровицы Club · Фев–Авг</div></div></div>
         <div class="emp-t"><div class="td td-w" style="margin-top:3px;flex-shrink:0"></div><div><div class="emp-tn">Аудит планировок МКД</div><div class="emp-to">Мартемьяново · уточнить</div></div></div>
       </div>
+      </div>
     </div>
 
-    <div class="emp-card">
-      <div class="emp-head">
+    <div class="emp-card" style="border-left-color:var(--c4)">
+      <div class="emp-head" onclick="toggleEmp(this)">
         <div class="emp-ava" style="background:rgba(37,99,235,.1);color:var(--c4)">—</div>
-        <div><div class="emp-nm">Сотрудник 3</div><div class="emp-role">3D-визуализатор</div></div>
+        <div>
+          <div class="emp-nm">Сотрудник 3</div>
+          <div class="emp-role">3D-визуализатор</div>
+        </div>
         <span class="load-tag lmd">85%</span>
+        <div class="emp-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
       </div>
+
+      <div class="emp-body">
       <div class="kpi-row">
         <div class="sec-lbl">KPI · февраль</div>
         <div class="kpi-item">
@@ -832,14 +882,21 @@ body {
         <div class="emp-t"><div class="td td-a" style="margin-top:3px;flex-shrink:0"></div><div><div class="emp-tn">Правки АР1 АР2</div><div class="emp-to">Жаворонки Club · Март</div></div></div>
         <div class="emp-t"><div class="td td-p" style="margin-top:3px;flex-shrink:0"></div><div><div class="emp-tn">Шоурумы 2 типа</div><div class="emp-to">Апрелевка Club · Май–Авг</div></div></div>
       </div>
+      </div>
     </div>
 
-    <div class="emp-card">
-      <div class="emp-head">
+    <div class="emp-card" style="border-left-color:var(--c3)">
+      <div class="emp-head" onclick="toggleEmp(this)">
         <div class="emp-ava" style="background:rgba(124,58,237,.1);color:var(--c3)">—</div>
-        <div><div class="emp-nm">Сотрудник 4</div><div class="emp-role">Архитектор / планировщик</div></div>
+        <div>
+          <div class="emp-nm">Сотрудник 4</div>
+          <div class="emp-role">Архитектор / планировщик</div>
+        </div>
         <span class="load-tag lok">70%</span>
+        <div class="emp-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
       </div>
+
+      <div class="emp-body">
       <div class="kpi-row">
         <div class="sec-lbl">KPI · февраль</div>
         <div class="kpi-item">
@@ -856,6 +913,7 @@ body {
         <div class="emp-t"><div class="td td-p" style="margin-top:3px;flex-shrink:0"></div><div><div class="emp-tn">Планы МКД 1-5 этажи</div><div class="emp-to">Дубровицы Club · Апр–Июл</div></div></div>
         <div class="emp-t"><div class="td td-a" style="margin-top:3px;flex-shrink:0"></div><div><div class="emp-tn">Дизайн-проект МОП</div><div class="emp-to">Апрелевка Club · Март–Июн</div></div></div>
       </div>
+      </div>
     </div>
 
   </div>
@@ -864,42 +922,42 @@ body {
 <!-- ════════ AI ════════ -->
 <div class="page" id="page-ai">
   <div class="page-hdr">
-    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
     <div>
       <div class="ph-title">AI Сервисы</div>
       <div class="ph-sub">Инструменты отдела · быстрый доступ</div>
     </div>
   </div>
   <div class="list-pad">
+    <a class="ai-item" href="https://claude.ai" target="_blank">
+      <div class="ai-ico-w ai-ico-plain" style="background:#f5f5f5;"><img src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" style="width:38px;height:38px;border-radius:9px;object-fit:contain;display:block;"></div>
+      <div class="ai-info"><div class="ai-name">Claude</div><div class="ai-desc">ТЗ, брифы, концепции, документация</div></div>
+      <div class="ai-right"><span class="plan-tag">Team</span><span class="ai-arr">›</span></div>
+    </a>
+    <a class="ai-item" href="https://gemini.google.com" target="_blank">
+      <div class="ai-ico-w ai-ico-plain" style="background:#f5f5f5;"><img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=64" style="width:38px;height:38px;border-radius:9px;object-fit:contain;display:block;"></div>
+      <div class="ai-info"><div class="ai-name">Gemini</div><div class="ai-desc">Поиск, анализ, работа с документами</div></div>
+      <div class="ai-right"><span class="plan-tag">Pro</span><span class="ai-arr">›</span></div>
+    </a>
+    <a class="ai-item" href="https://www.krea.ai" target="_blank">
+      <div class="ai-ico-w ai-ico-plain" style="background:#f5f5f5;"><img src="https://www.google.com/s2/favicons?domain=krea.ai&sz=64" style="width:38px;height:38px;border-radius:9px;object-fit:contain;display:block;"></div>
+      <div class="ai-info"><div class="ai-name">Krea AI</div><div class="ai-desc">Генерация и улучшение изображений в реальном времени</div></div>
+      <div class="ai-right"><span class="plan-tag">Pro</span><span class="ai-arr">›</span></div>
+    </a>
     <a class="ai-item" href="https://www.midjourney.com" target="_blank">
-      <div class="ai-ico-w">🎨</div>
+      <div class="ai-ico-w ai-ico-plain" style="background:#f5f5f5;"><img src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=64" style="width:38px;height:38px;border-radius:9px;object-fit:contain;display:block;"></div>
       <div class="ai-info"><div class="ai-name">Midjourney</div><div class="ai-desc">Концепты, настроения, референсы для объектов</div></div>
       <div class="ai-right"><span class="plan-tag">Pro</span><span class="ai-arr">›</span></div>
     </a>
-    <a class="ai-item" href="https://claude.ai" target="_blank">
-      <div class="ai-ico-w">✦</div>
-      <div class="ai-info"><div class="ai-name">Claude AI</div><div class="ai-desc">ТЗ, брифы, концепции, документация</div></div>
-      <div class="ai-right"><span class="plan-tag">Team</span><span class="ai-arr">›</span></div>
-    </a>
-    <a class="ai-item" href="https://www.adobe.com/products/firefly.html" target="_blank">
-      <div class="ai-ico-w">🔥</div>
-      <div class="ai-info"><div class="ai-name">Adobe Firefly</div><div class="ai-desc">Generative Fill, текстуры для отделки</div></div>
-      <div class="ai-right"><span class="plan-tag">CC</span><span class="ai-arr">›</span></div>
+    <a class="ai-item" href="https://klingai.com" target="_blank">
+      <div class="ai-ico-w ai-ico-plain" style="background:#f5f5f5;"><img src="https://www.google.com/s2/favicons?domain=klingai.com&sz=64" style="width:38px;height:38px;border-radius:9px;object-fit:contain;display:block;"></div>
+      <div class="ai-info"><div class="ai-name">Kling AI</div><div class="ai-desc">Генерация видео из изображений и текста</div></div>
+      <div class="ai-right"><span class="plan-tag">Pro</span><span class="ai-arr">›</span></div>
     </a>
     <a class="ai-item" href="https://www.chaos.com/vray" target="_blank">
-      <div class="ai-ico-w">🏗️</div>
-      <div class="ai-info"><div class="ai-name">V-Ray + AI Denoiser</div><div class="ai-desc">Рендеринг с AI-шумоподавлением до 3×</div></div>
+      <div class="ai-ico-w ai-ico-plain" style="background:#f5f5f5;"><img src="https://www.google.com/s2/favicons?domain=chaos.com&sz=64" style="width:38px;height:38px;border-radius:9px;object-fit:contain;display:block;"></div>
+      <div class="ai-info"><div class="ai-name">V-Ray AI Denoiser</div><div class="ai-desc">Рендеринг с AI-шумоподавлением до 3×</div></div>
       <div class="ai-right"><span class="plan-tag">Studio</span><span class="ai-arr">›</span></div>
-    </a>
-    <a class="ai-item" href="https://chat.openai.com" target="_blank">
-      <div class="ai-ico-w">🤖</div>
-      <div class="ai-info"><div class="ai-name">ChatGPT</div><div class="ai-desc">Тексты презентаций, письма клиентам</div></div>
-      <div class="ai-right"><span class="plan-tag">Plus</span><span class="ai-arr">›</span></div>
-    </a>
-    <a class="ai-item" href="https://www.roomgpt.io" target="_blank">
-      <div class="ai-ico-w">🛋️</div>
-      <div class="ai-info"><div class="ai-name">RoomGPT</div><div class="ai-desc">AI-перестановка интерьера по фото</div></div>
-      <div class="ai-right"><span class="plan-tag">Pro</span><span class="ai-arr">›</span></div>
     </a>
   </div>
 </div>
@@ -907,7 +965,7 @@ body {
 <!-- ════════ ABOUT ════════ -->
 <div class="page" id="page-about">
   <div class="page-hdr">
-    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+    <div class="back-btn" onclick="go('home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
     <div>
       <div class="ph-title">Об отделе</div>
       <div class="ph-sub">AI-платформа · Оцифровка таланта 2026</div>
@@ -1034,35 +1092,35 @@ body {
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <div class="ni" id="ni-home" onclick="go('home')">
-    <div class="ni-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg></div>
+  <div class="ni active" id="ni-home" onclick="go('home')">
+    <div class="ni-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
     <div class="ni-lbl">Главная</div>
   </div>
   <div class="ni" id="ni-timeline" onclick="go('timeline')">
-    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
     <div class="ni-lbl">График</div>
   </div>
-  <div class="ni active" id="ni-objects" onclick="go('objects')">
-    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M9 3v18M15 3v18M3 9h18M3 15h18"></path></svg></div>
+  <div class="ni" id="ni-objects" onclick="go('objects')">
+    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg></div>
     <div class="ni-lbl">Объекты</div>
   </div>
   <div class="ni" id="ni-team" onclick="go('team')">
-    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
     <div class="ni-lbl">Команда</div>
   </div>
   <div class="ni" id="ni-ai" onclick="go('ai')">
-    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path><path d="M19 3l.9 2.1L22 6l-2.1.9L19 9l-.9-2.1L16 6l2.1-.9z"></path><path d="M5 17l.9 2.1L8 20l-2.1.9L5 23l-.9-2.1L2 20l2.1-.9z"></path></svg></div>
+    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3l.9 2.1L22 6l-2.1.9L19 9l-.9-2.1L16 6l2.1-.9z"/><path d="M5 17l.9 2.1L8 20l-2.1.9L5 23l-.9-2.1L2 20l2.1-.9z"/></svg></div>
     <div class="ni-lbl">AI</div>
   </div>
   <div class="ni" id="ni-about" onclick="go('about')">
-    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="8.01"></line><line x1="12" y1="11" x2="12" y2="16"></line></svg></div>
+    <div class="ni-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8.01"/><line x1="12" y1="11" x2="12" y2="16"/></svg></div>
     <div class="ni-lbl">О нас</div>
   </div>
 </div>
 
 </div><!-- /app -->
 
-<div id="tip" style="display: none;">
+<div id="tip">
   <div class="tn" id="tt-n">—</div>
   <div class="to" id="tt-o">—</div>
   <div class="tr"><span>Месяц</span><span id="tt-m">—</span></div>
@@ -1208,12 +1266,12 @@ function tick(){
 }
 
 function toggleCard(el){ el.classList.toggle('open'); }
+function toggleEmp(headEl){ headEl.closest('.emp-card').classList.toggle('open'); }
 
 tick();
 setInterval(tick,10000);
 setInterval(posCursor,60000);
 window.addEventListener('resize',posCursor);
 </script>
-
-
-<div id="claude-agent-glow-border" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483646; opacity: 1; transition: opacity 0.3s ease-in-out; animation: 2s ease-in-out 0s infinite normal none running claude-pulse; box-shadow: rgba(217, 119, 87, 0.5) 0px 0px 10px inset, rgba(217, 119, 87, 0.3) 0px 0px 20px inset, rgba(217, 119, 87, 0.1) 0px 0px 30px inset;"></div></body></html>
+</body>
+</html>
